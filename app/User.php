@@ -36,4 +36,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * videos that the user uploaded
+     */
+    public function videos(){
+        return $this->hasMany('App\Video');
+    }
+    /**
+     * subscriptions by the user
+     */
+    public function subscriptions(){
+        return $this->hasMany('App\Subscription');
+    }
 }
