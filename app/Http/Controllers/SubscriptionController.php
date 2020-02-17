@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use Paystack;
 use App\Video;
-use App\SUbscription;
+use App\Subscription;
 use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller

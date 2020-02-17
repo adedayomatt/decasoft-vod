@@ -12,7 +12,9 @@
                             <video src="{{$video->video}}" poster="{{$video->cover['src']}}" preload="metadata"  style="width: 100%" controls></video>
                         @endif
                     @else
-                        <img src="{{$video->cover['src']}}" alt="{{$video->cover['alt']}}" style="width: 100%; filter: gray(100)" class="mb-1">
+                    <div style="background-image: url({{$video->cover['src']}}); background-repeat: no-repeat; baxckground-size: cover; background-position: center; height:  400px;">
+                            {{-- <img src="{{$video->cover['src']}}" alt="{{$video->cover['alt']}}" style="width: 100%; max-height: 400px" class="mb-1"> --}}
+                    </div>
                     @endif
                 </div>
                 <h4>{{$video->title}}</h4>
