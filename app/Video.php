@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Video extends Model
 {
     protected $guarded = ['id'];
-    protected $appends = ['cover', 'video'];
+    protected $appends = ['cover', 'video', 'src'];
 
     /**
      * The user that uploaded the video
@@ -38,6 +38,10 @@ class Video extends Model
             'alt' => $this->title
         ];
     }
+
+    public function getSrcAttribute(){
+        return $this->fromYoutube() ? 'Youtube' : ($this->locallyUploaded() ? 'Upload' : 'Unknown Source');
+    }
     /**
      * The video source file
      */
@@ -57,4 +61,19 @@ class Video extends Model
     public function can_watch(){
         return $this->subscriptions()->where('user_id', Auth::id())->count() > 0 || $this->is_mine() ? true : false;
     }
+
+    /**
+     * Determine if the video was imported from youtube
+     */
+    public function fromYoutube(){
+        return $this->source == 'youtube' ? true : false;
+    }
+
+    /**
+     * Determine if the video was uploaded
+     */
+    public function locallyUploaded(){
+        return $this->source == 'local' ? true : false;
+    }
+
 }

@@ -48,8 +48,9 @@ class VideoController extends Controller
             'user_id' => Auth::id(),
             'title' => $request->title,
             'description' => $request->description,
+            'source' => $request->source,
             'cover_file' => $request->uploaded_cover,
-            'video_file' => $request->uploaded_video,
+            'video_file' => $request->source == 'youtube' ? $request->youtube_id : $request->uploaded_video,
             'price' => $request->price,
         ]);
         
@@ -111,9 +112,13 @@ class VideoController extends Controller
     {
         $video = Video::findorfail($id);
         $video->delete();
-
         Storage::disk('public')->delete('videos/'.$video->cover_file);
-        Storage::disk('public')->delete('videos/'.$video->video_file);
+        /**
+         * If the video was uploaded, delete the video file
+         */
+        if($video->locallyUploaded()){
+            Storage::disk('public')->delete('videos/'.$video->video_file);
+        }
 
         return redirect()->route('user.videos')->with('success', 'video deleted');
 

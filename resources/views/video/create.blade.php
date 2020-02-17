@@ -27,8 +27,21 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Video</label>
+                            <label for="">Video Source</label>
+                            <select name="source" id="video-src" class="form-control" required>
+                                <option value="">select video source</option>
+                                <option value="youtube">Youtube</option>
+                                <option value="local">Computer</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="video-upload" style="display: none">
+                            <label for="">Upload video</label>
                             <input type="file" name="video_file"  class="form-control {{ $errors->has('video_file') ? ' is-invalid' : '' }}">
+                        </div>
+
+                        <div class="form-group" id="youtube-embed" style="display: none">
+                            <label for="">Embed youtube video</label>
+                            <input type="text" class="form-control {{ $errors->has('youtube_url') ? ' is-invalid' : '' }}" name="youtube_id" placeholder="Youtube video id, e.g XtbYBoKb2zY">
                         </div>
 
                         <div class="form-group">
@@ -67,4 +80,21 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('bottom-scripts')
+    <script src="{{asset('js/image-preview.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#video-src').change(function(e) {
+                if($(this).val() === 'local'){
+                    $('#video-upload').show()
+                    $('#youtube-embed').hide()
+                }else{
+                    $('#video-upload').hide()
+                    $('#youtube-embed').show()
+                }
+            })
+        })
+    </script>
 @endsection

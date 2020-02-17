@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Traits\FileUpload;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -36,8 +37,9 @@ class VideoRequest extends FormRequest
             case 'POST':
                 return [
                     'title' => ['required', 'string', 'max:255'],
+                    'source' => ['required'],
                     'cover_image' => ['required', 'mimes:'.implode(',', $this->acceptedCoverFormats())],
-                    'video_file' => ['required', 'mimes:'.implode(',', $this->acceptedVideoFormats())],
+                    'video_file' => [Rule::requiredIf($this->source == 'local'), 'mimes:'.implode(',', $this->acceptedVideoFormats())],
                     'price' => ['required', 'numeric']
                 ];
             break;
@@ -60,8 +62,10 @@ class VideoRequest extends FormRequest
 
         $validator->after(function ($validator){
             if($this->method() == "POST") {
-                // video upload
-                $this->uploadVideo();
+                if($this->source == 'local'){
+                    // video upload
+                    $this->uploadVideo();
+                }
                 // cover upload
                 $this->uploadCover();
             }
