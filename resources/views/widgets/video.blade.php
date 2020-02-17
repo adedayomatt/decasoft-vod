@@ -1,5 +1,8 @@
 <div>
-    <img src="{{$video->cover['src']}}" alt="{{$video->cover['alt']}}" style="width: 100%" class="mb-1">
+    <div style="background-image: url({{$video->cover['src']}}); background-repeat: no-repeat; baxckground-size: cover; background-position: center; height:  200px;">
+        {{-- <img src="{{$video->cover['src']}}" alt="{{$video->cover['alt']}}" style="w" class="mb-1"> --}}
+    </div>
+    
     <h5><a href="{{route('video.show', $video->id)}}">{{$video->title}}</a></h5>
     <div class="text-muted">
        <p>By {{$video->user->name}}</p> 

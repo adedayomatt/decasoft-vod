@@ -34,7 +34,7 @@ class Video extends Model
      */
     public function getCoverAttribute(){
         return [
-            'src' => asset('storage/videos/'.$this->cover_file),
+            'src' => file_exists('storage/videos/'.$this->cover_file) ? asset('storage/videos/'.$this->cover_file) : asset('assets/vod.png'),
             'alt' => $this->title
         ];
     }
