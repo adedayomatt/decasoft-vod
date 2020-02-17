@@ -49,4 +49,15 @@ class User extends Authenticatable
     public function subscriptions(){
         return $this->hasMany('App\Subscription');
     }
+
+    /**
+     * videos subscribed to
+     */
+    public function subscribed_videos(){
+        $videos = collect([]);
+        foreach ($this->subscriptions as $subscription) {
+            $videos->push($subscription->video);
+        }
+        return $videos;
+    }
 }

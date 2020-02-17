@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h4 class="text-center">Recent Videos</h4>
+    <h4 class="text-center">My uploaded Videos</h4>
     @if ($videos->count() > 0)
         <div class="row justify-content-center">
             @foreach ($videos as $video)

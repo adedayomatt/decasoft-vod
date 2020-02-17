@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Storage;
+use App\Video;
 use Illuminate\Http\Request;
+use App\Http\Requests\VideoRequest;
 
 class VideoController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth')
+              ->except(['show', 'index']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +22,7 @@ class VideoController extends Controller
      */
     public function index()
     {
-        //
+        return view('video.index')->with('videos', Video::orderby('created_at', 'desc')->get());
     }
 
     /**
@@ -23,7 +32,7 @@ class VideoController extends Controller
      */
     public function create()
     {
-        //
+        return view('video.create');
     }
 
     /**
@@ -32,9 +41,20 @@ class VideoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(VideoRequest $request)
     {
-        //
+
+        $video = Video::create([
+            'user_id' => Auth::id(),
+            'title' => $request->title,
+            'description' => $request->description,
+            'cover_file' => $request->uploaded_cover,
+            'video_file' => $request->uploaded_video,
+            'price' => $request->price,
+        ]);
+        
+        return redirect()->route('video.show', [$video->id])->with('success', 'New video added successsfully');
+
     }
 
     /**
@@ -45,7 +65,7 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('video.show')->with('video', Video::findorfail($id));
     }
 
     /**
@@ -56,7 +76,7 @@ class VideoController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('video.edit')->with('video', Video::findorfail($id));
     }
 
     /**
@@ -66,9 +86,19 @@ class VideoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(VideoRequest $request, $id)
     {
-        //
+        $video = Video::findorfail($id);
+        $video->title = $request->title;
+        $video->description = $request->description;
+        $video->price = $request->price;
+        if($request->uploaded_cover){
+            $video->cover_file = $request->uploaded_cover;
+        }
+        $video->save();
+
+        return redirect()->route('video.show', [$video->id])->with('success', 'Video updated');
+
     }
 
     /**
@@ -79,6 +109,13 @@ class VideoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $video = Video::findorfail($id);
+        $video->delete();
+
+        Storage::disk('public')->delete('videos/'.$video->cover_file);
+        Storage::disk('public')->delete('videos/'.$video->video_file);
+
+        return redirect()->route('user.videos')->with('success', 'video deleted');
+
     }
 }

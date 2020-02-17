@@ -19,6 +19,9 @@ class CreateSubscriptionsTable extends Migration
             $table->bigInteger('video_id')->unsigned();
             $table->float('amount_paid');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('video_id')->references('id')->on('videos')->onDelete('cascade');
         });
     }
 
