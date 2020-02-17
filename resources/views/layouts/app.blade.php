@@ -44,7 +44,7 @@
 
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a href="{{route('video.create')}}" class="btn btn-primary">Upload video</a>
+                            <a href="{{route('video.create')}}" class="btn btn-primary">Add video</a>
                         </li>
                     </ul>
 

@@ -15,7 +15,7 @@
         <div class="alert alert-danger">
             No video yet
         </div>
-        <a href="{{route('video.create')}}" class="btn btn-primary">upload video</a>
+        <a href="{{route('video.create')}}" class="btn btn-primary">Add video</a>
     @endif
 </div>
 @endsection

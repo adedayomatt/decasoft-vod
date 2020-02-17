@@ -22,7 +22,7 @@ class VideoController extends Controller
      */
     public function index()
     {
-        return view('video.index')->with('videos', Video::orderby('created_at', 'desc')->get());
+        return view('home')->with('videos', Video::orderby('created_at', 'desc')->get());
     }
 
     /**
